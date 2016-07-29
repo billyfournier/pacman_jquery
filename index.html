@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>PacMan</title>
+        <!-- <link rel="stylesheet" href="style.css"> -->
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function(){
+                var world = [
+                    [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+                    [2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+                    [2,1,2,1,2,1,2,1,1,2,2,1,2,1,2,1,2,1,1,2],
+                    [2,1,2,1,1,1,2,1,1,2,2,1,2,1,2,1,2,1,1,2],
+                    [2,1,2,2,2,1,2,1,1,2,2,1,1,1,2,1,1,1,1,2],
+                    [2,1,1,1,1,1,2,1,1,2,2,1,2,1,2,1,2,1,1,2],
+                    [2,1,2,1,2,1,2,1,1,1,1,1,2,1,2,1,2,1,1,2],
+                    [2,1,2,1,2,1,1,1,1,1,1,1,2,1,2,1,2,1,1,2],
+                    [2,1,1,1,1,1,1,2,2,0,2,2,2,1,2,1,2,1,1,2],
+                    [2,1,1,1,1,1,1,2,0,0,0,2,1,1,1,1,1,1,1,2],
+                    [2,1,2,1,2,1,1,2,0,0,0,2,1,1,2,1,2,1,1,2],
+                    [2,1,2,1,1,1,1,2,2,2,2,2,2,1,2,1,2,1,1,2],
+                    [2,1,2,2,2,1,1,1,1,1,1,1,2,1,2,1,2,1,1,2],
+                    [2,1,1,1,1,1,2,1,1,2,2,1,2,1,2,1,2,1,1,2],
+                    [2,1,2,1,2,1,2,1,1,1,1,1,2,1,2,1,2,1,1,2],
+                    [2,1,2,1,2,1,1,1,1,1,1,1,2,1,2,1,2,1,1,2],
+                    [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+                    [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+                ];
+
+                var pacman = {
+                    x: 1,
+                    y: 1
+                }
+                var score = 0;
+
+                function displayWorld(){
+                    var output = '';
+                    for(var i = 0; i < world.length; i++){
+                        output += '\n<div class="row">\n'
+                        for(var j = 0; j < world[i].length; j++){
+                            if(world[i][j] == 2){
+                                output += '<div class="brick"></div>';
+                            }
+                            else if (world[i][j] == 1) {
+                                output += '<div class="coin"></div>';
+                            }
+                            else {
+                                output += '<div class="empty"></div>';
+                            }
+                        }
+                        output += '\n</div>';
+                    }
+                    // console.log(output);
+                    document.getElementById('world').innerHTML = output;
+                }
+                function displayPacman(){
+                    document.getElementById('pacman').style.top = pacman.y*20+"px";
+                    document.getElementById('pacman').style.left = pacman.x*20+"px";
+                }
+                function displayScore(){
+                    document.getElementById('score').innerHTML = score;
+                }
+                displayWorld();
+                displayPacman();
+
+                document.onkeydown = function(e){
+                    // console.log(e);
+                    console.log(e.keyCode);
+                    if(e.keyCode == 37 && world[pacman.y][pacman.x-1] != 2){
+                        console.log("left");
+                        pacman.x--;
+                        // document.getElementById('pacman').style.-webkit-transform = rotate(30);
+                        $('#pacman').css({'-webkit-transform' : 'rotate(-180deg)',
+                     '-moz-transform' : 'rotate(-180deg)',
+                     '-ms-transform' : 'rotate(-180deg)',
+                     'transform' : 'rotate(-180deg)'});
+                    }
+                    if(e.keyCode == 39 && world[pacman.y][pacman.x+1] != 2){
+                        console.log("right");
+                        pacman.x++;
+                        $('#pacman').css({'-webkit-transform' : 'rotate(0deg)',
+                        '-moz-transform' : 'rotate(0deg)',
+                        '-ms-transform' : 'rotate(0deg)',
+                        'transform' : 'rotate(0deg)'});
+                    }
+                    if(e.keyCode == 38 && world[pacman.y-1][pacman.x] != 2){
+                        console.log("up");
+                        pacman.y--;
+                        $('#pacman').css({'-webkit-transform' : 'rotate(-90deg)',
+                     '-moz-transform' : 'rotate(-90deg)',
+                     '-ms-transform' : 'rotate(-90deg)',
+                     'transform' : 'rotate(-90deg)'});
+                    }
+                    if(e.keyCode == 40 && world[pacman.y+1][pacman.x] != 2){
+                        console.log("down");
+                        pacman.y++;
+                        $('#pacman').css({'-webkit-transform' : 'rotate(90deg)',
+                     '-moz-transform' : 'rotate(90deg)',
+                     '-ms-transform' : 'rotate(90deg)',
+                     'transform' : 'rotate(90deg)'});
+                    }
+
+                    if(world[pacman.y][pacman.x] == 1){
+                        world[pacman.y][pacman.x] = 0;
+                        score += 10;
+                        displayWorld();
+                        displayScore();
+                    }
+                    displayPacman();
+                }
+
+            });
+        </script>
+        <style>
+            * {
+                margin: 0px; padding: 0px;
+            }
+            body {
+                background-color: pink;
+            }
+            #world {
+                display: inline-block;
+                background-color: black;
+            }
+            div.row {
+                height: 20px;
+            }
+            div.row div {
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+            }
+            .brick {
+                background-color: blue;
+            }
+            .coin {
+                background: url('coin.gif');
+                background-repeat: no-repeat;;
+                background-position: center;
+            }
+            #pacman {
+                width: 20px;
+                height: 20px;
+                background: url('pacman.gif');
+                background-size: 100%;
+                position: absolute;
+                top: 20px;
+                left: 20px;
+            }
+            #score {
+                border: solid 3px green;
+                width: 80px;
+                height: 20px;
+                color: green;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="world"></div>
+        <div id="pacman"></div>
+        <div id="score">0</div>
+    </body>
+</html>
